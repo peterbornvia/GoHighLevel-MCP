@@ -117,7 +117,7 @@ class GHLMCPHttpServer {
   private setupExpress(): void {
     // Enable CORS for Claude integration
     this.app.use(cors({
-      origin: ['https://claude.ai', 'https://console.anthropic.com', 'http://localhost:*'],
+      origin: ['https://claude.ai', 'https://claude.com', 'http://localhost:*'],
       methods: ['GET', 'POST', 'OPTIONS'],
       allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
       credentials: false
