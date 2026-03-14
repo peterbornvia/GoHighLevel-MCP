@@ -1,6 +1,6 @@
 /**
  * GoHighLevel MCP HTTP Server
- * HTTP version for ChatGPT web integration
+ * HTTP version for Claude web integration
  */
 
 import express from 'express';
@@ -115,12 +115,12 @@ class GHLMCPHttpServer {
    * Setup Express middleware and configuration
    */
   private setupExpress(): void {
-    // Enable CORS for ChatGPT integration
+    // Enable CORS for Claude integration
     this.app.use(cors({
-      origin: '*',
+      origin: ['https://claude.ai', 'https://console.anthropic.com', 'http://localhost:*'],
       methods: ['GET', 'POST', 'OPTIONS'],
       allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
-      credentials: true
+      credentials: false
     }));
 
     // Parse JSON requests
@@ -350,7 +350,7 @@ class GHLMCPHttpServer {
       }
     });
 
-    // SSE endpoint for ChatGPT MCP connection
+    // SSE endpoint for Claude MCP connection
     const handleSSE = async (req: express.Request, res: express.Response) => {
       const sessionId = req.query.sessionId || 'unknown';
       console.log(`[GHL MCP HTTP] New SSE connection from: ${req.ip}, sessionId: ${sessionId}, method: ${req.method}`);
@@ -696,7 +696,7 @@ class GHLMCPHttpServer {
         console.log(`🌐 Server running on: http://0.0.0.0:${this.port}`);
         console.log(`🔗 SSE Endpoint: http://0.0.0.0:${this.port}/sse`);
         console.log(`📋 Tools Available: ${this.getToolsCount().total}`);
-        console.log('🎯 Ready for ChatGPT integration!');
+        console.log('🎯 Ready for Claude integration!');
         console.log('=========================================');
       });
       
