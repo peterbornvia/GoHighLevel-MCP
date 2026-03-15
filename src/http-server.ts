@@ -386,6 +386,27 @@ class GHLMCPHttpServer {
     this.app.get('/sse', handleSSE);
     this.app.post('/sse', handleSSE);
 
+        // OAuth discovery endpoints (required by Claude)
+    this.app.get('/.well-known/oauth-protected-resource', (req, res) => {
+      res.json({
+        resource: req.protocol + '://' + req.get('host'),
+        authorization_servers: [req.protocol + '://' + req.get('host')],
+        scopes_supported: ['read', 'write']
+      });
+    });
+
+    this.app.get('/.well-known/oauth-authorization-server', (req, res) => {
+      res.json({
+        issuer: req.protocol + '://' + req.get('host'),
+        authorization_endpoint: req.protocol + '://' + req.get('host') + '/authorize',
+        token_endpoint: req.protocol + '://' + req.get('host') + '/token'
+      });
+    });
+
+    this.app.post('/register', (req, res) => {
+      res.json({ client_id: 'ghl-mcp-server' });
+    });
+
     // Root endpoint with server info
     this.app.get('/', (req, res) => {
       res.json({
